@@ -14,14 +14,6 @@
 
 #pragma comment(lib, "PowrProf.lib")
 
-//
-// Accent color is set to "Overcast" (#767676) and lock screen detailed status is set to none.
-//
-// TODO: lock screen "apps show quick status" -> none. No documented registry location was found.
-//       Windows 11 has no such setting; on Windows 10, `reg export` the Lock Screen key before and
-//       after changing it in Settings and diff the two files.
-//
-
 namespace fs = std::filesystem;
 
 namespace {
@@ -58,12 +50,6 @@ namespace {
 
     constexpr BYTE autohide_flag = 0x01;
 
-    // "Overcast" is #767676. It is gray, so ABGR and ARGB are the same bytes.
-    // Eight RGB0 entries, light to dark, base color in the fourth slot.
-    // The base color and the trailing entry are known; the tint and shade steps are
-    // approximate. To use Windows' exact values, pick Overcast once in Settings, run
-    //   reg query "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v AccentPalette
-    // and paste the 32 bytes here.
     constexpr BYTE overcast_palette[32] = {
         0xC5, 0xC5, 0xC5, 0x00,   // light 3  (approximate)
         0xAE, 0xAE, 0xAE, 0x00,   // light 2  (approximate)
@@ -129,7 +115,6 @@ namespace {
         { HKEY_LOCAL_MACHINE, dsh_policy_key,             L"DisableWidgetsOnLockScreen",              1 },
         { HKEY_CURRENT_USER,  advanced_key,               L"TaskbarSmallIcons",                       1 },
         { HKEY_CURRENT_USER,  advanced_key,               L"TaskbarSi",                               0 },
-        // Accent color: Overcast. AutoColorization off so Windows doesn't pick one from the wallpaper.
         { HKEY_CURRENT_USER,  L"Control Panel\\Desktop",  L"AutoColorization",                        0 },
         { HKEY_CURRENT_USER,  accent_key,                 L"AccentColorMenu",                         0xFF767676 },
         { HKEY_CURRENT_USER,  accent_key,                 L"StartColorMenu",                          0xFF767676 },
